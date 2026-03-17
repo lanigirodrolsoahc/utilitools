@@ -2,8 +2,8 @@
 
 Common tools for quick PHP development – lightweight helpers, database utilities, JS helpers, and more.
 
-[![stable](https://img.shields.io/badge/stable-v1.0.0-brightgreen)](https://packagist.org/packages/lanigirodrolsoahc/utilit00ls)
-[![Downloads](https://img.shields.io/packagist/dt/lanigirodrodsoahc/utilit00ls.svg)](https://packagist.org/packages/lanigirodrolsoahc/utilit00ls)
+[![stable](https://img.shields.io/badge/stable-v1.0.0-brightgreen)](https://packagist.org/packages/lanigirodrolsoahc/utilitools)
+[![Downloads](https://img.shields.io/packagist/dt/lanigirodrolsoahc/utilitools.svg)](https://packagist.org/packages/lanigirodrolsoahc/utilitools)
 
 ## PHP Compatibility
 
@@ -67,14 +67,14 @@ utilit00ls
 ```php
 require dirname(__FILE__).'/vendor/autoload.php';
 
-use Utilit00ls\Std;
+use Utilitools\Std;
 
 Std::__new();
 ```
 
 ## Test
 ```bash
-php ./vendor/bin/phpunit tests --testdox
+php ./vendor/bin/phpunit vendor/lanigirodrolsoahc/utilitools/tests --testdox
 ```
 
 ## License
