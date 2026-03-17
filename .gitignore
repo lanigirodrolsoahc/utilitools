@@ -1,0 +1,13 @@
+/vendor/
+/composer.lock
+/.idea/
+/.vscode/
+/*.iml
+.DS_Store
+Thumbs.db
+*.log
+tmp/
+cache/
+/local/
+.phpunit.result.cache
+/tests/sqllitefile.sqlite
