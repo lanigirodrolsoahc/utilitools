@@ -12,7 +12,7 @@ Common tools for quick PHP development – lightweight helpers, database utiliti
 
 ## Installation
 ```bash
-composer require lanigirodrolsoahc/utilit00ls
+composer require lanigirodrolsoahc/utilitools
 ```
 
 ## Structure
