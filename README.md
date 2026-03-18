@@ -2,7 +2,7 @@
 
 Common tools for quick PHP development – lightweight helpers, database utilities, JS helpers, and more.
 
-[![stable](https://img.shields.io/badge/stable-v1.0.1-brightgreen)](https://packagist.org/packages/lanigirodrolsoahc/utilitools)
+[![stable](https://img.shields.io/badge/stable-v1.0.2-brightgreen)](https://packagist.org/packages/lanigirodrolsoahc/utilitools)
 [![Downloads](https://img.shields.io/packagist/dt/lanigirodrolsoahc/utilitools.svg)](https://packagist.org/packages/lanigirodrolsoahc/utilitools)
 
 ## PHP Compatibility
