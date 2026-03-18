@@ -81,6 +81,6 @@ php ./vendor/bin/phpunit vendor/lanigirodrolsoahc/utilitools/tests --testdox
 
 MIT License
 
-Copyright (c) lanigirodrodsoahc
+Copyright (c) lanigirodrolsoahc
 
 See the [LICENSE](LICENSE) file for details.
