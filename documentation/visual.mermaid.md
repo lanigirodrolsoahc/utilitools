@@ -39,6 +39,7 @@ graph LR
         tests -.-> t_vo["vo.Test.php"]
     utilit00ls -.-> gitattributes[".gitattributes"]
     utilit00ls -.-> gitignore[".gitignore"]
+    utilit00ls -.-> fautoload["autoload.php"]
     utilit00ls -.-> composer["composer.json"]
     utilit00ls -.-> license["LICENSE"]
     utilit00ls -.-> unit["phpunit.xml"]
@@ -64,7 +65,7 @@ graph LR
 
     class src,js,system,t00ls,trait,view,utilit00ls,documentation,tests folder;
 
-    class Database,Sql,SystemClass,Crap,Debug,Includer,Mailer,MonthlyMarkDown,Std,WorkingDays,Databased,Dates,Errors,VirtualObject,HtmlGenerator,krypto,dummyvo,dummykrypto,mockmarkdown php;
+    class Database,Sql,SystemClass,Crap,Debug,Includer,Mailer,MonthlyMarkDown,Std,WorkingDays,Databased,Dates,Errors,VirtualObject,HtmlGenerator,krypto,dummyvo,dummykrypto,mockmarkdown,fautoload php;
 
     class Helper,Loader,Tooltip js;
 
