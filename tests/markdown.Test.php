@@ -5,6 +5,7 @@ use Utilitools\WorkingDays;
 use Utilitools\Includer;
 
 Includer::Instance()
+    ->namespaced()
     ->lazy(false)
     ->setRoot(__DIR__)
     ->files('MockMarkDown.class.php')

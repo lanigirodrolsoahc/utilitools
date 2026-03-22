@@ -13,6 +13,7 @@ System::Instance()
     );
 
 Includer::Instance()
+    ->namespaced()
     ->lazy(false)
     ->setRoot(__DIR__)
     ->files('DummyVO.class.php')

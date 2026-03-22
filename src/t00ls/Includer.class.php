@@ -22,6 +22,8 @@ class Includer
     private bool $lazy = false;
     public array $maps = [];
 
+    private $namespaced = false;
+
     private
     function __construct ()
     {
@@ -104,21 +106,26 @@ class Includer
                 break;
             }
 
-            foreach ( new \DirectoryIterator($path) as $file )
+            $registry = function ( string $path, string $name ) : void
             {
-                if ( $file->isDot() ) continue;
-
-                $name = $file->getFilename();
-
-                if ( ! empty($this->files) && ! \in_array($name, $this->files) ) continue;
-
                 $fullPath = \sprintf('%1$s%2$s%3$s', $path, DIRECTORY_SEPARATOR, $name);
 
                 if ( $this->lazy )
                     $this->register($fullPath);
                 else
                     include_once $fullPath;
-            }
+            };
+
+            if ( ! empty($this->files) )
+                foreach ( $this->files as $name )
+                    $registry($path, $name);
+            else
+                foreach ( new \DirectoryIterator($path) as $file )
+                {
+                    if ( $file->isDot() ) continue;
+
+                    $registry( $path, $file->getFilename() );
+                }
         }
         while ( 0 );
 
@@ -169,6 +176,21 @@ class Includer
     }
 
     /**
+     * determines if includes are namespaced
+     *
+     * @param   ?string   $namespace
+     *
+     * @return  Includer
+     */
+    public
+    function namespaced ( ?string $namespace = '' ) : Includer
+    {
+        $this->namespaced = $namespace ?: false;
+
+        return $this;
+    }
+
+    /**
      * registers a file for class map
      *
      * @param   string  $path
@@ -180,8 +202,10 @@ class Includer
     {
         $this->maps[
             \sprintf(
-                '%1$s\\%2$s',
-                __NAMESPACE__,
+                '%1$s%2$s',
+                $this->namespaced
+                    ? sprintf('%1$s\\', $this->namespaced)
+                    : '',
                 \preg_replace(
                     '/\.(class|trait|view)\.php$/',
                     '',

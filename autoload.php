@@ -3,8 +3,9 @@
 use Utilitools\Includer;
 
 Includer::Instance()
+    ->namespaced('Utilitools')
     ->lazy()
-    ->setRoot( sprintf( '%1$s/src', dirname(__FILE__) ) )
+    ->setRoot( sprintf( '%1$s/src', __DIR__ ) )
         ->to('trait')
         ->inc()
     ->up()

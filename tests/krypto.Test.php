@@ -4,6 +4,7 @@ use PHPUnit\Framework\TestCase;
 use Utilitools\Includer;
 
 Includer::Instance()
+    ->namespaced()
     ->lazy(false)
     ->setRoot(__DIR__)
     ->files('DummyKrypto.class.php')
