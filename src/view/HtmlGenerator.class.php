@@ -25,12 +25,6 @@ class HtmlGenerator
                 EMO_TAG         = '🏷️',
                 TYPE_CLASS      = 'class';
 
-    protected
-    const       COMPANY_LOGO    = 'sso.png',
-                CSS_COMPANY     = 'company.css',
-                COMPONENT_PATH  = 'corporate/',
-                SIXTY_FOR_ICON  = 'iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAACt0lEQVQ4T01TTUhUURg9971RMdGRJGIGnRZD0CKpJMiNmyAw2yTpqJiWVC4KhaJFKiEEtZBKAyHIbFCp0FpYVhuhiDAIG4xaKP5AoJhUKGmo8/du57tvDB887p153/m55/uu6uj5VPJt8kd4cy0a9DhJeBwNj07C5mo5DvfgqqG0vODjwOZ+R1bGnM+3M6TqrgzPri6vB9Ok2ABYQIDNvSEhSDkkSYEVvyvSyOvNzZxTlRcGtRONG6CQiKoLpJMkVamoHAVLQKyRR/YgoSfNhqo590TrWMJYd1XFIlBcsgf7DwYM4PP7aUxGFgzIgFME6TYJ6hoeaydGB9tsi9L1O+XwF+TBIeHN5kH8XlxzrZujcKW7dI+CajjbzyMkTFBbgfkLctB2+xSUsjA3tYB7ra+ozGI3QzcPBp7u4b/n64Ugvi0wjbLQAZRVHjZKL/vHMP5uhk40NlZjxoGSrCQzOULj6bDW0eT/tKVdbZ0n4QvkIUrit8MRlIaOYGN9E+1nBuBEJVSXIMOmg4u1YZ0kgbRKLPrys9FytwKWpTDxcQajQxO42hkCf+JB+wimI/OuW5MBMZdqHpFAeusOS2llIU5UF8OhwsNbb0z6N8J1yPZmYez1F7zo/kACySHJI9BBU3UvCdx+QydwrasC/sAuxNmZga5R6LjGsVARAnt9WPn1Bx31fVSXeaEDyaC5qlcnYjwCGXcXeNHSVUW7FjTdmMa72bMjlODZ7zc9xdLUT0NgHDRX9bgZsLjk+D4cLT+UgmxNjNCk7gFJx55FMP78q5uBEFwO9eg4HciEGVXTJvciyTibS8RiW+4IV1G2kuCebZQ5aGvom11d2QhunzCZRGmTENkslsBcoPsKkZDm5mV9V92tI0VLi8tD639jQUtayQkTVQNIXS5DJN+ouuUix5s5n1/or/0HkCqR6CwO40QAAAAASUVORK5CYII=';
-
     protected   $dirname,
                 $jsMain,
                 $mainContent,
@@ -57,7 +51,7 @@ class HtmlGenerator
         $this->doc->formatOutput    = true;
         $this->dirname              = dirname(__FILE__);
         $this->mainContent          = $this->doc->createElement('div');
-        $this->toRoot               = sprintf('%1$s%2$s', $this->locateRoot(), self::COMPONENT_PATH);
+        $this->toRoot               = \sprintf('%1$s%2$s', $this->locateRoot(), System::Instance()->{ System::COMPONENT_PATH } ?? '');
 
         $this->mainContent->setAttribute('class', 'mainContent');
     }
@@ -70,7 +64,7 @@ class HtmlGenerator
      * @return  \DOMElement
      */
     public
-    function __a ( string $content = null ) : \DOMElement
+    function __a ( ?string $content = null ) : \DOMElement
     {
         $this->tmpContent   = $content;
         $this->tmpType      = 'a';
@@ -89,9 +83,9 @@ class HtmlGenerator
     public
     function __add ( $elements, $to = null ) : HtmlGenerator
     {
-        $to = is_null($to) ? $this->mainContent : $to;
+        $to = \is_null($to) ? $this->mainContent : $to;
 
-        if ( ! is_array($elements) ) $elements = [$elements];
+        if ( ! \is_array($elements) ) $elements = [$elements];
 
         foreach ( $elements as $element ) $to->appendChild($element);
 
@@ -232,7 +226,7 @@ class HtmlGenerator
 
         $fieldset = $this->__new();
 
-        if ( ! is_null($legend) ) $fieldset->appendChild( $this->__legend($legend) );
+        if ( ! \is_null($legend) ) $fieldset->appendChild( $this->__legend($legend) );
 
         return $fieldset;
     }
@@ -274,10 +268,10 @@ class HtmlGenerator
      * @return  \DOMElement
      */
     public
-    function __h ( int $level, string $content = null ) : \DOMElement
+    function __h ( int $level, ?string $content = null ) : \DOMElement
     {
         $this->tmpContent   = $content;
-        $this->tmpType      = sprintf('h%1$s', abs($level));
+        $this->tmpType      = \sprintf('h%1$s', \abs($level));
 
         return $this->__new();
     }
@@ -442,7 +436,7 @@ class HtmlGenerator
             $div = $this->doc->createElement($this->tmpType);
             $div->appendChild($this->tmpContent);
         }
-        else $div = $this->doc->createElement($this->tmpType, is_null($this->tmpContent) ? '' : $this->tmpContent);
+        else $div = $this->doc->createElement($this->tmpType, \is_null($this->tmpContent) ? '' : $this->tmpContent);
 
         return $div;
     }
@@ -473,7 +467,7 @@ class HtmlGenerator
      * @return  static
      */
     public
-    function __script ( string $path, \DOMElement $attachTo = null, $isPathContent = false ) : HtmlGenerator
+    function __script ( string $path, ?\DOMElement $attachTo = null, $isPathContent = false ) : HtmlGenerator
     {
         $js         = $this->doc->createTextNode( $isPathContent ? $path : file_get_contents($path) );
         $script     = $this->doc->createElement('script');
@@ -536,7 +530,7 @@ class HtmlGenerator
      * @return  static
      */
     public
-    function __style ( string $path, \DOMElement $attachTo = null ) : HtmlGenerator
+    function __style ( string $path, ?\DOMElement $attachTo = null ) : HtmlGenerator
     {
         $style      = $this->doc->createTextNode(file_get_contents($path));
         $css        = $this->doc->createElement('style');
@@ -567,7 +561,7 @@ class HtmlGenerator
      * @return  \DOMElement
      */
     public
-    function __tableCell ( string $content = null ) : \DOMElement
+    function __tableCell ( ?string $content = null ) : \DOMElement
     {
         $this->tmpContent   = $content;
         $this->tmpType      = 'td';
@@ -641,9 +635,9 @@ class HtmlGenerator
      * @param   ?\DOMElement     $content
      */
     public
-    function addContent ( \DOMElement $content = null ) : void
+    function addContent ( ?\DOMElement $content = null ) : void
     {
-        true && ! is_null($content) && $this->mainContent->appendChild($content);
+        true && ! \is_null($content) && $this->mainContent->appendChild($content);
     }
 
     /**
@@ -656,7 +650,7 @@ class HtmlGenerator
     protected
     function addModuleJS ( \DOMElement &$parent ) // : static
     {
-        if ( ! is_null($this->jsMain) )
+        if ( ! \is_null($this->jsMain) )
         {
             $js = $this->doc->createElement('script');
 
@@ -725,7 +719,7 @@ class HtmlGenerator
         $css    = $this->doc->createElement('link');
 
         $meta->setAttribute('charset', 'utf-8');
-        $css->setAttribute('href', sprintf('%2$s%1$s', self::CSS_COMPANY, $this->toRoot));
+        $css->setAttribute('href', \sprintf('%2$s%1$s', System::Instance()->{ System::COMPANY_CSS } ?? '', $this->toRoot));
         $css->setAttribute('type', 'text/css');
         $css->setAttribute('rel', 'stylesheet');
 
@@ -739,7 +733,7 @@ class HtmlGenerator
 
         $this->addModuleJS($head);
 
-        true && ! is_null($this->mainContent) && $body->appendChild($this->mainContent);
+        true && ! \is_null($this->mainContent) && $body->appendChild($this->mainContent);
 
         $this->doc->appendChild($html);
 
@@ -759,7 +753,7 @@ class HtmlGenerator
         $link->setAttribute('rel', 'icon');
         $link->setAttribute('type', 'image/png');
         $link->setAttribute('sizes', '16x16');
-        $link->setAttribute('href', sprintf('data:image/png;base64, %1$s', static::SIXTY_FOR_ICON));
+        $link->setAttribute('href', \sprintf( 'data:image/png;base64, %1$s', System::Instance()->{ System::SIXTY_FOR_ICON } ));
 
         return $link;
     }
@@ -802,7 +796,7 @@ class HtmlGenerator
         $div->appendChild($img);
 
         $div->setAttribute('class', 'logoContainer');
-        $img->setAttribute('src', sprintf('%2$s%1$s', self::COMPANY_LOGO, $this->toRoot));
+        $img->setAttribute('src', \sprintf('%2$s%1$s', System::Instance()->{ System::COMPANY_LOGO } ?? '', $this->toRoot));
         $img->setAttribute('alt', 'logo company');
 
         return $div;
@@ -827,7 +821,7 @@ class HtmlGenerator
 
             for ( $i = 0; $i < $separators - 2; $i++ ) array_push($rewind, '..');
 
-            $out = sprintf('%1$s/', implode('/', $rewind));
+            $out = \sprintf('%1$s/', implode('/', $rewind));
         }
         while ( 0 );
 
@@ -844,7 +838,7 @@ class HtmlGenerator
     public
     function render ( $element = null ) : HtmlGenerator
     {
-        echo html_entity_decode( $this->doc->saveHTML($element) );
+        echo \html_entity_decode( $this->doc->saveHTML($element) );
 
         return $this;
     }
