@@ -674,15 +674,9 @@ class HtmlGenerator
     public
     function appendHTML ( \DOMElement &$parent, string $html ) : HtmlGenerator
     {
-        $tmpDoc = new self;
-        $tmpDoc->doc->loadHTML($html);
+        ( $frag = $parent->ownerDocument->createDocumentFragment() )->appendXML($html);
 
-        foreach ( $tmpDoc->doc->getElementsByTagName('body')->item(0)->childNodes as $node )
-        {
-            $node = $parent->ownerDocument->importNode($node, true);
-
-            $parent->appendChild($node);
-        }
+        $parent->appendChild($frag);
 
         return $this;
     }
