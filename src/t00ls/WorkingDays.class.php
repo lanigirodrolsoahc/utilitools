@@ -53,7 +53,7 @@ class WorkingDays
             $dayName    = \substr($getName, 0, 3);
 
             if ( ! \in_array($dayName, $this->weekEnd) && $i >= $this->start )
-                $this->workdays[] = \sprintf('%1$s.%2$s.%3$s - %4$s', $this->year, self::stringDigits($this->month), self::stringDigits($i), $getName);
+                $this->workdays[$i] = \sprintf('%1$s.%2$s.%3$s - %4$s', $this->year, self::stringDigits($this->month), self::stringDigits($i), $getName);
         }
 
         return $this;
