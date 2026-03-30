@@ -58,22 +58,23 @@ trait Dates
     /**
      * gets a year and a month
      *
-     * @param   string      $date
-     * @param   ?string     $locale
-     * @param   ?string     $timezone
+     * @param   \DateTimeInterface  $date
+     * @param   ?string             $locale
+     * @param   ?string             $timezone
      *
      * @return  string
      */
     public
-    function fullFrenchDate ( string $date, string $locale = 'fr', string $timezone = '' ) : string
+    function fullFrenchDate ( \DateTimeInterface $date, string $locale = 'fr', string $timezone = '' ) : string
     {
         return (
-            new \IntlDateFormatter($locale, \IntlDateFormatter::FULL, \IntlDateFormatter::NONE)
-        )->format(
-            new \DateTime(
-                $date,
-                new \DateTimeZone( $timezone ?: self::$EUROPE_PARIS ))
-            );
+            new \IntlDateFormatter(
+                $locale,
+                \IntlDateFormatter::FULL,
+                \IntlDateFormatter::NONE,
+                $timezone ?: self::$EUROPE_PARIS
+            )
+        )->format($date);
     }
 
     /**
