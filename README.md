@@ -21,6 +21,10 @@ utilit00ls
 ├── documentation/
 │   └── visual.mermaid.md
 ├── src/
+│   ├── interface/
+│   │   ├── locale/
+|   |   |   └──French.class.php
+│   │   └── Locale.interface.php
 │   ├── js/
 │   │   ├── Helper.class.js
 │   │   ├── Loader.class.js
@@ -42,9 +46,13 @@ utilit00ls
 │   │   ├── Databased.trait.php
 │   │   ├── Dates.trait.php
 │   │   ├── Errors.trait.php
+│   │   ├── Instanced.trait.php
 │   │   └── VirtualObject.trait.php
 │   └── view/
-│       └── HtmlGenerator.class.php
+|       ├── style/
+|       |   └──Periods.style.css
+│       |── HtmlGenerator.class.php
+│       └── Period.class.php
 ├── tests/
 │   ├── dates.Test.php
 │   ├── DummyKrypto.class.php
@@ -52,15 +60,16 @@ utilit00ls
 │   ├── krypto.Test.php
 │   ├── markdown.Test.php
 │   ├── MockMarkDown.class.php
+│   ├── period.Test.php
 │   ├── std.Test.php
 │   ├── system.Test.php
-│   ├── vo.Test.php
+│   └── vo.Test.php
 ├── .gitattributes
 ├── .gitignore
 ├── autoload.php
 ├── composer.json
-└── LICENSE
-└── phpunit.xml
+├── LICENSE
+├── phpunit.xml
 └── README.md
 ```
 

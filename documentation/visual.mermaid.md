@@ -3,6 +3,10 @@ graph LR
     utilit00ls --- documentation
         documentation -.-> visual["visual.mermaid.md"]
     utilit00ls --- src
+        src --> interface
+            interface --> locale
+                locale -.-> French["French.class.php"]
+            interface -.-> Locale["Locale.interface.php"]
         src --> js
             js -.-> Helper["Helper.class.js"]
             js -.-> Loader["Loader.class.js"]
@@ -24,9 +28,13 @@ graph LR
             trait -.-> Databased["Databased.trait.php"]
             trait -.-> Dates["Dates.trait.php"]
             trait -.-> Errors["Errors.trait.php"]
+            trait -.-> Instanced["Instanced.trait.php"]
             trait -.-> VirtualObject["VirtualObject.trait.php"]
         src --> view
+            view --> css["style"]
+                css -.-> cssPeriods["Periods.style.css"]
             view -.-> HtmlGenerator["HtmlGenerator.class.php"]
+            view -.-> Period["Period.class.php"]
     utilit00ls --- tests
         tests -.-> t_dates["dates.Test.php"]
         tests -.-> dummyvo["DummyVO.class.php"]
@@ -34,6 +42,7 @@ graph LR
         tests -.-> t_krypto["krypto.Test.php"]
         tests -.-> t_markdown["markdown.Test.php"]
         tests -.-> mockmarkdown["MockMarkDown.class.php"]
+        tests -.-> t_period["period.Test.php"]
         tests -.-> t_std["std.Test.php"]
         tests -.-> t_system["system.Test.php"]
         tests -.-> t_vo["vo.Test.php"]
@@ -63,9 +72,11 @@ graph LR
 
     classDef united fill:#ffd8a8,stroke:#E5532B,stroke-width:1px,rx:6px,ry:6px;
 
-    class src,js,system,t00ls,trait,view,utilit00ls,documentation,tests folder;
+    classDef css fill:#D6E6EA,stroke:#6B8A94,stroke-width:1px,rx:6px,ry:6px;
 
-    class Database,Sql,SystemClass,Crap,Debug,Includer,Mailer,MonthlyMarkDown,Std,WorkingDays,Databased,Dates,Errors,VirtualObject,HtmlGenerator,krypto,dummyvo,dummykrypto,mockmarkdown,fautoload php;
+    class src,js,system,t00ls,trait,view,utilit00ls,documentation,tests,css,interface,locale folder;
+
+    class Database,Sql,SystemClass,Crap,Debug,Includer,Mailer,MonthlyMarkDown,Std,WorkingDays,Databased,Dates,Errors,VirtualObject,HtmlGenerator,krypto,dummyvo,dummykrypto,mockmarkdown,fautoload,Period,Instanced,Locale,French php;
 
     class Helper,Loader,Tooltip js;
 
@@ -79,5 +90,7 @@ graph LR
 
     class unit united;
 
-    class t_std,t_vo,t_system,t_krypto,t_markdown,t_dates tested;
+    class t_std,t_vo,t_system,t_krypto,t_markdown,t_dates,t_period tested;
+
+    class cssPeriods css;
 ```

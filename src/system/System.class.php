@@ -4,6 +4,8 @@ namespace Utilitools;
 
 class System
 {
+    use Instanced;
+
     public
     const   COMPANY_COLOR           = 'companyColor',
             COMPANY_CSS             = 'companyCss',
@@ -15,6 +17,7 @@ class System
             COMPANY_PHONE           = 'companyPhone',
             COMPANY_WEBSITE         = 'companyWebsite',
             COMPONENT_PATH          = 'componentPath',
+            LOCALE                  = 'locale',
             ROOT_API                = 'rootApi',
             ROOT_INDEX              = 'rootIndex',
             ROOT_SERVICES           = 'rootServices',
@@ -43,6 +46,7 @@ class System
                 $companyPhone,
                 $companyWebsite,
                 $componentPath,
+                $locale,
                 $rootApi,
                 $rootIndex,
                 $rootServices,
@@ -55,25 +59,6 @@ class System
                 $sqlPwdHome,
                 $sqlPwdWork,
                 $sqlUser;
-
-    /**
-     *  returns the one and only instance of this class
-     *
-     * @return  static
-    */
-    public static
-    function & Instance () : System
-    {
-        static $instance = null;
-
-        if ( \is_null($instance) )
-        {
-            $class      = \get_called_class();
-            $instance   = new $class();
-        }
-
-        return $instance;
-    }
 
     /**
      * Use `SsoSystem::Instance()`

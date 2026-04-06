@@ -2,6 +2,8 @@
 
 namespace Utilitools;
 
+use DateTime;
+
 class WorkingDays
 {
     use Dates;
@@ -9,14 +11,14 @@ class WorkingDays
     private
     const       DAY_FORMAT      = 'd';
 
-    private     $daysCount,
-                $weekEnd        = ['Sat', 'Sun'],
-                $start;
-
-    public      $fileName,
-                $month,
-                $workdays       = [], /** array<int, string> */
-                $year;
+    private ?int $daysCount;
+    private ?int $start;
+    private array $offDays = []; /** array<int> */
+    private array $weekEnd = [];
+    public ?string $fileName;
+    public ?int $month;
+    public array $workdays = []; /** array<int, string> */
+    public ?int $year;
 
 
     /**
@@ -29,22 +31,36 @@ class WorkingDays
     {
         $month              = $this->isIntInValidRange($month, 1, 12);
         $start              = $this->isIntInValidRange($start, 1, 31);
-        $this->month        = ! $month ? \date('n') : $month;
-        $this->year         = \is_int($year) ? $year : \date('Y');
+
+        $this->month        = ! $month ? \intval(\date('n')) : $month;
+        $this->year         = \is_int($year) ? $year : \intval(\date('Y'));
         $this->daysCount    = \cal_days_in_month(CAL_GREGORIAN, $this->month, $this->year);
-        $this->start        = ! $start ? \date('d') : $start;
+        $this->start        = ! $start ? \intval(\date(self::DAY_FORMAT)) : $start;
         $this->fileName     = \sprintf('%1$s%2$s', $this->year, self::stringDigits($this->month));
+        $this->weekEnd      = $this->getLocale()->weekend();
     }
 
     /**
      * builds an array listing all working days of current month, starting at current day
      *
+     * @param   ?bool   $includeNonWorkingDays
+     *
      * @return  WorkingDays
      */
     public
-    function buildWorkingDays () : WorkingDays
+    function buildWorkingDays ( ?bool $includeNonWorkingDays = true ) : WorkingDays
     {
         $this->workdays = [];
+
+        $zeroTime = fn ( \DateTime $day ) : \DateTime => ( clone $day )->setTime(0, 0, 0);
+
+        $holidays = \array_map(
+            fn ( \DateTime $day ) : \DateTime => $zeroTime($day),
+            \array_merge(
+                $this->offDays,
+                $this->getLocale()->holidays($this->year)
+            )
+        );
 
         for ( $i = 1; $i <= $this->daysCount; $i++ )
         {
@@ -52,7 +68,17 @@ class WorkingDays
             $getName    = \date( 'l', \strtotime($date) );
             $dayName    = \substr($getName, 0, 3);
 
-            if ( ! \in_array($dayName, $this->weekEnd) && $i >= $this->start )
+            if (
+                ! \in_array($dayName, $this->weekEnd)
+                && $i >= $this->start
+                && (
+                    $includeNonWorkingDays
+                    ?: ! \in_array(
+                        $zeroTime( new DateTime( \sprintf('%1$s-%2$02d-%3$02d', $this->year, $this->month, $i) ) ),
+                        $holidays
+                    )
+                )
+            )
                 $this->workdays[$i] = \sprintf('%1$s.%2$s.%3$s - %4$s', $this->year, self::stringDigits($this->month), self::stringDigits($i), $getName);
         }
 
@@ -66,8 +92,6 @@ class WorkingDays
      * @param       \DateTime       $end
      *
      * @return      int
-     *
-     * @todo        manage company gifts
      */
     public
     function calcWorkedDays ( \DateTime $start, \DateTime $end ) : int
@@ -85,8 +109,11 @@ class WorkingDays
             $isFirstMonth   = ! isset($isLastMonth);
             $isLastMonth    = $currentMonth == $endYearMonth;
 
-            if ( ! empty($holidays) )                                       $yearMonthDay[2] = 1;
-            if ( ! \array_key_exists($year = $yearMonthDay[0], $holidays) )  $holidays[$year] = $ziss->listHolidays($year)[$year];
+            if ( ! empty($holidays) )
+                $yearMonthDay[2] = 1;
+
+            if ( ! \array_key_exists($year = $yearMonthDay[0], $holidays) )
+                $holidays[$year] = $ziss->listHolidays($year)[$year];
 
             $monthHolidays = $holidays[ $year ][ $yearMonthDay[1] ] ?? false;
 
@@ -111,6 +138,17 @@ class WorkingDays
         }
 
         return $worked;
+    }
+
+    /**
+     * gets `Locale` instance as set in `System`, or default one
+     *
+     * @return  Locale
+     */
+    private
+    function getLocale () : Locale
+    {
+        return System::Instance()->{ System::LOCALE } ?? French::Instance();
     }
 
     /**
@@ -141,42 +179,47 @@ class WorkingDays
     }
 
     /**
-     * lists holidays for french metropole
+     * lists holidays based on `Locale` (see interface)
      *
      * @param   ?int    $year
      *
      * @return  array
      */
-    public static
+    public
     function listHolidays ( int $year = 0 ) : array
     {
         if ( $year !== 0 )
             $year = (int) (new \DateTime)->format('Y');
 
-        $holidays =
-        [
-            '1er janvier'           => new \DateTime( \sprintf('%1$s-01-01', $year) ),
-            'Fête du travail'       => $mayTheFirst = new \DateTime( \sprintf('%1$s-05-01', $year) ),
-            'Victoire des alliés'   => ( clone $mayTheFirst )->add( new \DateInterval('P7D') ),
-            'Fête nationale'        => new \DateTime( \sprintf('%1$s-07-14', $year) ),
-            'Assomption'            => new \DateTime( \sprintf('%1$s-08-15', $year) ),
-            'Toussaint'             => $allSaints = new \DateTime( \sprintf('%1$s-11-01', $year) ),
-            'Armistice'             => ( clone $allSaints )->add( new \DateInterval('P10D') ),
-            'Noël'                  => new \DateTime( \sprintf('%1$s-12-25', $year) ),
-            'Lundi de Pâques'       => $easterMonday = ( self::easterDateTime($year) )->add( new \DateInterval('P1D') ),
-            'Ascension'             => ( clone $easterMonday )->add( new \DateInterval('P38D') ),
-            'Lundi de Pentecôte'    => ( clone $easterMonday )->add( new \DateInterval('P49D') )
-        ];
+        $holidays = $this->getLocale()->holidays($year);
+
+        foreach ( $this->offDays as $day )
+            $holidays[ \sprintf('off %1$02d', $day->format(self::DAY_FORMAT) ) ] = $day;
 
         \asort($holidays);
 
-        $holidays   = \array_map( fn($date) : string => $date->format(self::$SIMPLE_DATE_FORMAT), $holidays );
+        $holidays   = \array_map( fn ($date) : string => $date->format(self::$SIMPLE_DATE_FORMAT), $holidays );
         $out        = [];
 
         foreach ( $holidays as $name => $date )
             $out[ (int) ($date = \explode('-', $date))[0] ][ (int) $date[1] ][ (int) $date[2] ] = $name;
 
         return $out;
+    }
+
+    /**
+     * defines off days for current month
+     *
+     * @param   array<\DateTime>  $days
+     *
+     * @return  WorkingDays
+     */
+    public
+    function off ( array $days ) : WorkingDays
+    {
+        $this->offDays = \array_unique( \array_filter( $days, fn ( $day ) : bool => $day instanceof \DateTime ) );
+
+        return $this;
     }
 
     /**

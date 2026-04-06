@@ -9,6 +9,11 @@ Includer::Instance()
         ->to('trait')
         ->inc()
     ->up()
+        ->to('interface')
+        ->inc()
+            ->to('locale')
+            ->inc()
+    ->up(2)
         ->to('system')
         ->inc()
     ->up()
@@ -25,4 +30,8 @@ Includer::Instance()
         ->inc()
     ->up()
         ->to('view')
+        ->files(
+            'HtmlGenerator.class.php',
+            'Period.class.php'
+        )
         ->inc();

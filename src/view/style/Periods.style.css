@@ -1,0 +1,94 @@
+.Period {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: start;
+    padding: .4em;
+    user-select: none;
+}
+
+.PeriodItem {
+    width: 8em;
+    box-shadow: 2px 2px 4px silver;
+    overflow: hidden;
+    transition: all 1s ease-in-out;
+}
+
+.PeriodItem > div:nth-child(1) {
+    background-color: #FF8673;
+    border: 2px solid black;
+    border-radius: .2em .2em 0 0;
+    padding: .4em;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+    text-align: center;
+    font-weight: bold;
+    font-style: oblique;
+    font-size: .6em;
+}
+
+.PeriodItem > div:nth-child(1) > div:nth-child(1) {
+    text-align: left;
+}
+
+.PeriodItem > div:nth-child(1) > div:nth-child(2) {
+    text-align: right;
+}
+
+.PeriodItem > div:nth-child(2) {
+    background-color: white;
+    border: 2px solid black;
+    border-top: none !important;
+    border-radius: 0 0 .3em .3em;
+    padding: .4em;
+    color: black;
+    font-style: normal;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.PeriodItem .dayed {
+    border: 1px solid black;
+    width: 1em;
+    height: 1em;
+    background-color: #80808060;
+    margin: .2em;
+    border-radius: .2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 1px 1px 2px #80808070;
+    transition: all 1s ease-in-out;
+}
+
+.PeriodItem .dayed:not(.halfedFirst):not(.halfedLast):hover {
+    background-color: black;
+    color: white;
+    text-shadow: none;
+}
+
+.PeriodItem .dayed > div {
+    font-size: .6em;
+    padding: .3em;
+    font-weight: normal;
+}
+
+.PeriodItem .dayed.halfedFirst {
+    background-color: transparent;
+    background: linear-gradient(135deg, white 50%, #80808060 50%);
+}
+
+.PeriodItem .dayed.halfedLast {
+    background: linear-gradient(135deg, #80808060 50%, white 50%);
+    background-color: transparent;
+}
+
+.PeriodItem .dayed.halfedFirst:hover {
+    background: linear-gradient(135deg, #80808030 50%, #f5ac24 50%);
+}
+
+.PeriodItem .dayed.halfedLast:hover {
+    background: linear-gradient(135deg, #f5ac24 50%, #80808030 50%);
+}

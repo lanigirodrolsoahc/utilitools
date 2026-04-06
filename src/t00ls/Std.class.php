@@ -8,7 +8,7 @@ class StdNotAValidVariableNameException extends \Exception {}
 class Std extends \stdClass
 {
     /**
-     * use `self::Instance` instead
+     * use `self::__new` instead
      */
     private
     function __construct () {}

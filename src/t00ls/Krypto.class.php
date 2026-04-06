@@ -9,6 +9,8 @@ namespace Utilitools;
 abstract
 class Krypto
 {
+    use Instanced;
+
     private
     const   KRYPT_AES   = 'aes-256-cbc',
             KRYPT_SHA   = 'sha3-512';
@@ -25,25 +27,6 @@ class Krypto
     {
         $this->key32    = \base64_decode( static::KEY_32 );
         $this->key64    = \base64_decode( static::KEY_64 );
-    }
-
-    /**
-     * returns the only instance of this class
-     *
-     * @return  static
-     */
-    public static
-    function & Instance () // : static
-    {
-        static $instance = null;
-
-        if ( $instance == null )
-        {
-            $class = \get_called_class();
-            $instance = new $class();
-        }
-
-        return $instance;
     }
 
     /**

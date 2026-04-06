@@ -207,7 +207,7 @@ class Includer
                     ? sprintf('%1$s\\', $this->namespaced)
                     : '',
                 \preg_replace(
-                    '/\.(class|trait|view)\.php$/',
+                    '/\.(class|trait|view|interface)\.php$/',
                     '',
                     basename($path)
                 )

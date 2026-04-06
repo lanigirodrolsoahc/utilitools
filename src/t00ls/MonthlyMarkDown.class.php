@@ -59,7 +59,7 @@ class MonthlyMarkDown
     function buildMarkDown ( WorkingDays $wd )
     {
         if ( empty( $this->holidays[ $wd->year ] ?? false ) )
-            $this->holidays[ $wd->year ] = WorkingDays::listHolidays()[ $wd->year ] ?? [];
+            $this->holidays[ $wd->year ] = $wd->listHolidays()[ $wd->year ] ?? [];
 
         $wd->buildWorkingDays();
         $this->monthName = $this->monthToString($wd);

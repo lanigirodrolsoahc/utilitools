@@ -11,6 +11,8 @@ class SQLiteUnavailableException extends \Exception {}
  */
 class Database
 {
+    use Instanced;
+
     private
     const   TYPE_IN_MARKER      = 'formInParams';
 
@@ -44,25 +46,6 @@ class Database
             $sqlError,
             $statement,
             $total              = 0;
-
-    /**
-     *  returns the one and only instance of this class
-     *
-     * @return  Database
-    */
-    public static
-    function & Instance () : Database
-    {
-        static $instance = null;
-
-        if ( is_null($instance) )
-        {
-            $class      = \get_called_class();
-            $instance   = new $class();
-        }
-
-        return $instance;
-    }
 
     /**
      * Use `Database::Instance()`
