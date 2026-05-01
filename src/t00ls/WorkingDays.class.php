@@ -156,7 +156,7 @@ class WorkingDays
      *
      * @param   mixed   $candidate
      * @param   int     $minRange
-     * @param   int     $maxrange
+     * @param   int     $maxRange
      *
      * @return  int|false
      */
@@ -188,7 +188,7 @@ class WorkingDays
     public
     function listHolidays ( int $year = 0 ) : array
     {
-        if ( $year !== 0 )
+        if ( $year === 0 )
             $year = (int) (new \DateTime)->format('Y');
 
         $holidays = $this->getLocale()->holidays($year);
